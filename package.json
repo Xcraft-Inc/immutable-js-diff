@@ -16,16 +16,16 @@
   ],
   "author": "Intelie",
   "license": "MIT",
-  "repository" : {
-    "type" : "git",
-    "url" : "http://github.com/intelie/immutable-js-diff.git"
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/intelie/immutable-js-diff.git"
   },
   "devDependencies": {
     "gulp": "^3.8.9",
     "gulp-mocha": "^1.1.1",
     "gulp-util": "^3.0.1",
     "jscheck": "^0.2.0",
-    "jsondiff": "brenoferreira/json-diff"
+    "jsondiff": "Xcraft-Inc/json-diff"
   },
   "dependencies": {
     "immutable": "^4.0.0-rc.2"
