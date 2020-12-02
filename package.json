@@ -27,7 +27,7 @@
     "jscheck": "^0.2.0",
     "jsondiff": "Xcraft-Inc/json-diff"
   },
-  "dependencies": {
-    "immutable": "^4.0.0-rc.2"
+  "peerDependencies": {
+    "immutable": "*"
   }
 }
