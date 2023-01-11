@@ -98,16 +98,16 @@ var primitiveTypeDiff = function (a, b, p) {
 };
 
 var diff = function(a, b, p){
-  if(Immutable.is(a, b)){ return Immutable.List(); }
-  if(a != b && (a == null || b == null)){ return Immutable.fromJS([op('replace', [], b)]); }
+  if(Immutable.is(a, b)){ return []; }
+  if(a != b && (a == null || b == null)){ return [op('replace', [], b)]; }
   if(isIndexed(a) && isIndexed(b)){
-    return Immutable.fromJS(sequenceDiff(a, b));
+    return sequenceDiff(a, b);
   }
   else if(isMap(a) && isMap(b)){
-    return Immutable.fromJS(mapDiff(a, b));
+    return mapDiff(a, b);
   }
   else{
-    return Immutable.fromJS(primitiveTypeDiff(a, b, p));
+    return primitiveTypeDiff(a, b, p);
   }
 };
 
