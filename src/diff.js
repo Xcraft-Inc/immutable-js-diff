@@ -30,18 +30,18 @@ var mapDiff = function(a, b, p){
           var bValue = b.get ? b.get(aKey) : b;
           var areDifferentValues = (aValue !== bValue);
           if (areDifferentValues) {
-            ops.push(op('replace', path.concat(aKey), bValue));
+            ops.push(op('!=', path.concat(aKey), bValue));
           }
         }
       }
       else {
         if(areLists){
           removeKey = (lastKey != null && (lastKey+1) === aKey) ? removeKey : aKey;
-          ops.push( op('remove', path.concat(removeKey)) );
+          ops.push( op('-', path.concat(removeKey)) );
           lastKey = aKey;
         }
         else{
-          ops.push( op('remove', path.concat(aKey)) );
+          ops.push( op('-', path.concat(aKey)) );
         }
 
       }
@@ -50,7 +50,7 @@ var mapDiff = function(a, b, p){
 
   b.forEach(function(bValue, bKey){
     if(a.has && !a.has(bKey)){
-      ops.push( op('add', path.concat(bKey), bValue) );
+      ops.push( op('+', path.concat(bKey), bValue) );
     }
   });
 
@@ -75,15 +75,15 @@ var sequenceDiff = function (a, b, p) {
         ops = ops.concat(mapDiffs);
       }
       else{
-        ops.push(op('replace', path.concat(pathIndex), diff.newVal));
+        ops.push(op('!=', path.concat(pathIndex), diff.newVal));
       }
       pathIndex++;
     }
     else if(diff.op === '+'){
-      ops.push(op('add', path.concat(pathIndex), diff.val));
+      ops.push(op('+', path.concat(pathIndex), diff.val));
       pathIndex++;
     }
-    else if(diff.op === '-'){ ops.push(op('remove', path.concat(pathIndex))); }
+    else if(diff.op === '-'){ ops.push(op('-', path.concat(pathIndex))); }
   });
 
   return ops;
@@ -93,13 +93,13 @@ var primitiveTypeDiff = function (a, b, p) {
   var path = p || '';
   if(a === b){ return []; }
   else{
-    return [ op('replace', path.concat(''), b) ];
+    return [ op('!=', path.concat(''), b) ];
   }
 };
 
 var diff = function(a, b, p){
   if(Immutable.is(a, b)){ return []; }
-  if(a != b && (a == null || b == null)){ return [op('replace', [], b)]; }
+  if(a != b && (a == null || b == null)){ return [op('!=', [], b)]; }
   if(isIndexed(a) && isIndexed(b)){
     return sequenceDiff(a, b);
   }
