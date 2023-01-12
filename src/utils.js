@@ -8,7 +8,7 @@ var isIndexed = function(obj) { return Immutable.Iterable.isIndexed(obj); };
 var op = function(operation, path, value){
   if(operation === '-') { return { op: operation, path: path }; }
 
-  return { op: operation, path: path, value: value };
+  return { op: operation, path: path, value: Immutable.isImmutable(value) ? value.toJS() : value };
 };
 
 module.exports = {
