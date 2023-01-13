@@ -21,27 +21,27 @@ var mapDiff = function(a, b, p){
     a.forEach(function(aValue, aKey){
       if(b.has(aKey)){
         if(isMap(aValue) && isMap(b.get(aKey))){
-          ops = ops.concat(mapDiff(aValue, b.get(aKey), path.concat(aKey)));
+          ops = ops.concat(mapDiff(aValue, b.get(aKey), path.concat(''+aKey)));
         }
         else if(isIndexed(b.get(aKey)) && isIndexed(aValue)){
-          ops = ops.concat(sequenceDiff(aValue, b.get(aKey), path.concat(aKey)));
+          ops = ops.concat(sequenceDiff(aValue, b.get(aKey), path.concat(''+aKey)));
         }
         else {
           var bValue = b.get ? b.get(aKey) : b;
           var areDifferentValues = (aValue !== bValue);
           if (areDifferentValues) {
-            ops.push(op('!=', path.concat(aKey), bValue));
+            ops.push(op('!=', path.concat(''+aKey), bValue));
           }
         }
       }
       else {
         if(areLists){
           removeKey = (lastKey != null && (lastKey+1) === aKey) ? removeKey : aKey;
-          ops.push( op('-', path.concat(removeKey)) );
+          ops.push( op('-', path.concat(''+removeKey)) );
           lastKey = aKey;
         }
         else{
-          ops.push( op('-', path.concat(aKey)) );
+          ops.push( op('-', path.concat(''+aKey)) );
         }
 
       }
@@ -50,7 +50,7 @@ var mapDiff = function(a, b, p){
 
   b.forEach(function(bValue, bKey){
     if(a.has && !a.has(bKey)){
-      ops.push( op('+', path.concat(bKey), bValue) );
+      ops.push( op('+', path.concat(''+bKey), bValue) );
     }
   });
 
@@ -71,19 +71,19 @@ var sequenceDiff = function (a, b, p) {
     if(diff.op === '='){ pathIndex++; }
     else if(diff.op === '!='){
       if(isMap(diff.val) && isMap(diff.newVal)){
-        var mapDiffs = mapDiff(diff.val, diff.newVal, path.concat(pathIndex));
+        var mapDiffs = mapDiff(diff.val, diff.newVal, path.concat(''+pathIndex));
         ops = ops.concat(mapDiffs);
       }
       else{
-        ops.push(op('!=', path.concat(pathIndex), diff.newVal));
+        ops.push(op('!=', path.concat(''+pathIndex), diff.newVal));
       }
       pathIndex++;
     }
     else if(diff.op === '+'){
-      ops.push(op('+', path.concat(pathIndex), diff.val));
+      ops.push(op('+', path.concat(''+pathIndex), diff.val));
       pathIndex++;
     }
-    else if(diff.op === '-'){ ops.push(op('-', path.concat(pathIndex))); }
+    else if(diff.op === '-'){ ops.push(op('-', path.concat(''+pathIndex))); }
   });
 
   return ops;
