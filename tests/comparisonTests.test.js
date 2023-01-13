@@ -7,7 +7,7 @@ var jsonDiff = require('jsondiff');
 
 var compareDiffs = function(a, b){
   var jsonDiffResult = Immutable.fromJS(jsonDiff.diff(a, b));
-  var immutableDiffResult = diff(Immutable.fromJS(a), Immutable.fromJS(b));
+  var immutableDiffResult = Immutable.fromJS(diff(Immutable.fromJS(a), Immutable.fromJS(b)));
 
   assert.ok(Immutable.is(jsonDiffResult, immutableDiffResult));
 };

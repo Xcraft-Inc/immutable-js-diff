@@ -29,7 +29,7 @@ describe('Primitive types diff', function() {
     JSC.test(
       'returns [] when equal',
       function(veredict, int1){
-        var result = diff(int1, int1);
+        var result = Immutable.fromJS(diff(int1, int1));
         var expected = Immutable.fromJS([]);
 
         return veredict(Immutable.is(result, expected));
@@ -42,9 +42,9 @@ describe('Primitive types diff', function() {
     JSC.test(
       'replaces numbers',
       function(veredict, int1, int2){
-        var result = diff(int1, int2);
+        var result = Immutable.fromJS(diff(int1, int2));
         var expected = Immutable.fromJS([
-          {op: 'replace', path: '/', value: int2}
+          {op: '!=', path: [], value: int2}
         ]);
 
         return veredict(Immutable.is(result, expected));
@@ -58,9 +58,9 @@ describe('Primitive types diff', function() {
     JSC.test(
       'replaces strings',
       function(veredict, str1, str2){
-        var result = diff(str1, str2);
+        var result = Immutable.fromJS(diff(str1, str2));
         var expected = Immutable.fromJS([
-          {op: 'replace', path: '/', value: str2}
+          {op: '!=', path: [], value: str2}
         ]);
 
         return veredict(Immutable.is(result, expected));
@@ -74,9 +74,9 @@ describe('Primitive types diff', function() {
     JSC.test(
       'replaces arrays',
       function(veredict, array1, array2){
-        var result = diff(array1, array2);
+        var result = Immutable.fromJS(diff(array1, array2));
         var expected = Immutable.fromJS([
-          {op: 'replace', path: '/', value: array2}
+          {op: '!=', path: [], value: array2}
         ]);
 
         return veredict(Immutable.is(result, expected));
@@ -90,9 +90,9 @@ describe('Primitive types diff', function() {
     JSC.test(
       'replaces objects',
       function(veredict, object1, object2){
-        var result = diff(object1, object2);
+        var result = Immutable.fromJS(diff(object1, object2));
         var expected = Immutable.fromJS([
-          {op: 'replace', path: '/', value: object2}
+          {op: '!=', path: [], value: object2}
         ]);
 
         return veredict(Immutable.is(result, expected));

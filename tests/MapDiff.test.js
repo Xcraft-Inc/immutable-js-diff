@@ -26,7 +26,7 @@ describe('Map diff', function(){
   });
 
   it('returns empty diff when both values are null', function() {
-    var result = diff(null, null);
+    var result = Immutable.fromJS(diff(null, null));
 
     assert.ok(result.count() === 0);
   });
@@ -38,7 +38,7 @@ describe('Map diff', function(){
         var map1 = Immutable.fromJS(obj);
         var map2 = Immutable.fromJS(obj);
 
-        var result = diff(map1, map2);
+        var result = Immutable.fromJS(diff(map1, map2));
 
         return veredict(result.count() === 0);
       },
@@ -54,8 +54,8 @@ describe('Map diff', function(){
         var map1 = Immutable.fromJS(obj);
         var map2 = Immutable.fromJS(obj).set('key2', obj2.key2);
 
-        var result = diff(map1, map2);
-        var expected = Immutable.fromJS([{op: 'add', path: '/key2', value: obj2.key2}]);
+        var result = Immutable.fromJS(diff(map1, map2));
+        var expected = Immutable.fromJS([{op: '+', path: ['key2'], value: obj2.key2}]);
 
         return veredict(Immutable.is(result, expected));
       },
@@ -75,8 +75,8 @@ describe('Map diff', function(){
         var map1 = Immutable.fromJS(obj);
         var map2 = Immutable.fromJS(obj).set('key', newValue);
 
-        var result = diff(map1, map2);
-        var expected = Immutable.fromJS([{op: 'replace', path: '/key', value: newValue}]);
+        var result = Immutable.fromJS(diff(map1, map2));
+        var expected = Immutable.fromJS([{op: '!=', path: ['key'], value: newValue}]);
 
         return veredict(Immutable.is(result, expected));
       },
@@ -94,8 +94,8 @@ describe('Map diff', function(){
         var map1 = Immutable.fromJS(obj);
         var map2 = Immutable.Map();
 
-        var result = diff(map1, map2);
-        var expected = Immutable.fromJS([{op: 'remove', path: '/key'}]);
+        var result = Immutable.fromJS(diff(map1, map2));
+        var expected = Immutable.fromJS([{op: '-', path: ['key']}]);
 
         return veredict(Immutable.is(result, expected));
       },
@@ -114,8 +114,8 @@ describe('Map diff', function(){
         var map1 = Immutable.fromJS(obj);
         var map2 = Immutable.fromJS(obj).setIn(['b', 'd'], obj2.d);
 
-        var result = diff(map1, map2);
-        var expected = Immutable.fromJS([{op: 'add', path: '/b/d', value: obj2.d}]);
+        var result = Immutable.fromJS(diff(map1, map2));
+        var expected = Immutable.fromJS([{op: '+', path: ['b', 'd'], value: obj2.d}]);
 
         return veredict(Immutable.is(result, expected));
       },
@@ -138,8 +138,8 @@ describe('Map diff', function(){
         var map1 = Immutable.fromJS(obj);
         var map2 = Immutable.fromJS(obj).setIn(['b', 'c'], obj2.c);
 
-        var result = diff(map1, map2);
-        var expected = Immutable.fromJS([{op: 'replace', path: '/b/c', value: obj2.c}]);
+        var result = Immutable.fromJS(diff(map1, map2));
+        var expected = Immutable.fromJS([{op: '!=', path: ['b', 'c'], value: obj2.c}]);
 
         return veredict(Immutable.is(result, expected));
       },
@@ -162,8 +162,8 @@ describe('Map diff', function(){
         var map1 = Immutable.fromJS(obj).setIn(['b', 'd'], obj2.d);
         var map2 = Immutable.fromJS(obj);
 
-        var result = diff(map1, map2);
-        var expected = Immutable.fromJS([{op: 'remove', path: '/b/d'}]);
+        var result = Immutable.fromJS(diff(map1, map2));
+        var expected = Immutable.fromJS([{op: '-', path: ['b', 'd']}]);
 
         return veredict(Immutable.is(result, expected));
       },
@@ -186,8 +186,8 @@ describe('Map diff', function(){
         var map1 = Immutable.fromJS(obj);
         var map2 = Immutable.fromJS(obj).set('a', obj2.a);
 
-        var result = diff(map1, map2);
-        var expected = Immutable.fromJS([{op: 'replace', path: '/a', value: obj2.a}]);
+        var result = Immutable.fromJS(diff(map1, map2));
+        var expected = Immutable.fromJS([{op: '!=', path: ['a'], value: obj2.a}]);
 
         return veredict(Immutable.is(result, expected));
       },
@@ -210,10 +210,10 @@ describe('Map diff', function(){
         var map1 = Immutable.fromJS(obj);
         var map2 = Immutable.fromJS(obj).set('b', Immutable.fromJS(obj2));
 
-        var result = diff(map1, map2);
+        var result = Immutable.fromJS(diff(map1, map2));
         var expected = Immutable.fromJS([
-          {op: 'remove', path: '/b/c'},
-          {op: 'add', path: '/b/e', value: obj2.e},
+          {op: '-', path: ['b', 'c']},
+          {op: '+', path: ['b', 'e'], value: obj2.e},
         ]);
 
         return veredict(Immutable.is(result, expected));
@@ -241,8 +241,8 @@ describe('Map diff', function(){
           return list.push(newInt);
         });
 
-        var result = diff(map1, map2);
-        var expected = Immutable.fromJS([{op: 'add', path: '/b/c/5', value: newInt}]);
+        var result = Immutable.fromJS(diff(map1, map2));
+        var expected = Immutable.fromJS([{op: '+', path: ['b', 'c', '5'], value: newInt}]);
 
         return veredict(Immutable.is(result, expected));
       },
@@ -265,8 +265,8 @@ describe('Map diff', function(){
           return list.splice(removeIdx, 1);
         });
 
-        var result = diff(map1, map2);
-        var expected = Immutable.fromJS([{op: 'remove', path: '/b/c/'+removeIdx}]);
+        var result = Immutable.fromJS(diff(map1, map2));
+        var expected = Immutable.fromJS([{op: '-', path: ['b', 'c', ''+removeIdx]}]);
 
         return veredict(Immutable.is(result, expected));
       },
@@ -289,9 +289,9 @@ describe('Map diff', function(){
           return list.set(replaceIdx, newValue);
         });
 
-        var result = diff(map1, map2);
+        var result = Immutable.fromJS(diff(map1, map2));
         var expected = Immutable.fromJS([
-          {op: 'replace', path: '/b/c/'+replaceIdx, value: newValue}
+          {op: '!=', path: ['b', 'c', ''+replaceIdx], value: newValue}
         ]);
 
         return veredict(Immutable.is(result, expected));
@@ -316,8 +316,8 @@ describe('Map diff', function(){
     var list1 = Immutable.fromJS(array1);
     var list2 = Immutable.fromJS(array2);
 
-    var result = diff(list1, list2);
-    var expected = Immutable.fromJS([{op: 'add', path: '/1/b', value: 2.5}]);
+    var result = Immutable.fromJS(diff(list1, list2));
+    var expected = Immutable.fromJS([{op: '+', path: ['1', 'b'], value: 2.5}]);
 
     assert.ok(Immutable.is(result, expected));
   });
@@ -327,8 +327,8 @@ describe('Map diff', function(){
       var map1 = null;
       var map2 = Immutable.fromJS({a: 1});
 
-      var result = diff(map1, map2);
-      var expected = Immutable.fromJS([{op: 'replace', path: '/', value: map2}]);
+      var result = Immutable.fromJS(diff(map1, map2));
+      var expected = Immutable.fromJS([{op: '!=', path: [], value: map2}]);
 
       assert.ok(Immutable.is(result, expected));
     });
@@ -337,8 +337,8 @@ describe('Map diff', function(){
       var map1 = Immutable.fromJS({a: 1});
       var map2 = null;
 
-      var result = diff(map1, map2);
-      var expected = Immutable.fromJS([{op: 'replace', path: '/', value: map2}]);
+      var result = Immutable.fromJS(diff(map1, map2));
+      var expected = Immutable.fromJS([{op: '!=', path: [], value: map2}]);
 
       assert.ok(Immutable.is(result, expected));
     });
@@ -347,8 +347,8 @@ describe('Map diff', function(){
       var map1 = Immutable.fromJS({a: null});
       var map2 = Immutable.fromJS({a: 1});
 
-      var result = diff(map1, map2);
-      var expected = Immutable.fromJS([{op: 'replace', path: '/a', value: 1}]);
+      var result = Immutable.fromJS(diff(map1, map2));
+      var expected = Immutable.fromJS([{op: '!=', path: ['a'], value: 1}]);
 
       assert.ok(Immutable.is(result, expected));
     });
@@ -357,8 +357,8 @@ describe('Map diff', function(){
       var map1 = Immutable.fromJS({a: null});
       var map2 = Immutable.fromJS({});
 
-      var result = diff(map1, map2);
-      var expected = Immutable.fromJS([{op: 'remove', path: '/a'}]);
+      var result = Immutable.fromJS(diff(map1, map2));
+      var expected = Immutable.fromJS([{op: '-', path: ['a']}]);
 
       assert.ok(Immutable.is(result, expected));
     });
@@ -369,9 +369,9 @@ describe('Map diff', function(){
       var map1 = Immutable.fromJS({'a': 1, 'b': {'c': 3}});
       var map2 = Immutable.fromJS({'a': 1, 'b': {'c': 3, 'prop/prop': 4}});
 
-      var result = diff(map1, map2);
+      var result = Immutable.fromJS(diff(map1, map2));
       var expected = Immutable.fromJS([
-        {op: 'add', path: '/b/prop~1prop', value: 4}
+        {op: '+', path: ['b', 'prop/prop'], value: 4}
       ]);
 
       assert.ok(Immutable.is(result, expected));
@@ -381,9 +381,9 @@ describe('Map diff', function(){
       var map1 = Immutable.fromJS({'a': 1, 'b': {'c': 3, 'prop/prop': 4}});
       var map2 = Immutable.fromJS({'a': 1, 'b': {'c': 3, 'prop/prop': 10}});
 
-      var result = diff(map1, map2);
+      var result = Immutable.fromJS(diff(map1, map2));
       var expected = Immutable.fromJS([
-        {op: 'replace', path: '/b/prop~1prop', value: 10}
+        {op: '!=', path: ['b', 'prop/prop'], value: 10}
       ]);
 
       assert.ok(Immutable.is(result, expected));
@@ -393,9 +393,9 @@ describe('Map diff', function(){
       var map1 = Immutable.fromJS({'a': 1, 'b': {'c': 3, 'prop/prop': 4}});
       var map2 = Immutable.fromJS({'a': 1, 'b': {'c': 3}});
 
-      var result = diff(map1, map2);
+      var result = Immutable.fromJS(diff(map1, map2));
       var expected = Immutable.fromJS([
-        {op: 'remove', path: '/b/prop~1prop'}
+        {op: '-', path: ['b', 'prop/prop']}
       ]);
 
       assert.ok(Immutable.is(result, expected));
@@ -405,9 +405,9 @@ describe('Map diff', function(){
       var map1 = Immutable.fromJS({'a': 1, 'test/test': {'c': 3}});
       var map2 = Immutable.fromJS({'a': 1, 'test/test': {'c': 3, 'prop/prop': 4}});
 
-      var result = diff(map1, map2);
+      var result = Immutable.fromJS(diff(map1, map2));
       var expected = Immutable.fromJS([
-        {op: 'add', path: '/test~1test/prop~1prop', value: 4}
+        {op: '+', path: ['test/test', 'prop/prop'], value: 4}
       ]);
 
       assert.ok(Immutable.is(result, expected));
@@ -417,9 +417,9 @@ describe('Map diff', function(){
       var map1 = Immutable.fromJS({'a': 1, 'test/test': [0, 1, 2]});
       var map2 = Immutable.fromJS({'a': 1, 'test/test': [0, 1, 2, 3]});
 
-      var result = diff(map1, map2);
+      var result = Immutable.fromJS(diff(map1, map2));
       var expected = Immutable.fromJS([
-        {op: 'add', path: '/test~1test/3', value: 3}
+        {op: '+', path: ['test/test', '3'], value: 3}
       ]);
 
       assert.ok(Immutable.is(result, expected));
@@ -430,9 +430,9 @@ describe('Map diff', function(){
     var map1 = Immutable.fromJS({a:false});
     var map2 = Immutable.fromJS({a:{b:3}});
 
-    var result = diff(map1, map2);
+    var result = Immutable.fromJS(diff(map1, map2));
     var expected = Immutable.fromJS([
-      { op: 'replace', path: '/a', value: Immutable.fromJS({ b: 3 }) }
+      { op: '!=', path: ['a'], value: Immutable.fromJS({ b: 3 }) }
     ]);
 
     assert.ok(Immutable.is(result, expected));
@@ -442,9 +442,9 @@ describe('Map diff', function(){
     var map1 = Immutable.fromJS({a:{b:3}});
     var map2 = Immutable.fromJS({a:false});
 
-    var result = diff(map1, map2);
+    var result = Immutable.fromJS(diff(map1, map2));
     var expected = Immutable.fromJS([
-      { op: 'replace', path: '/a', value: false }
+      { op: '!=', path: ['a'], value: false }
     ]);
 
     assert.ok(Immutable.is(result, expected));
