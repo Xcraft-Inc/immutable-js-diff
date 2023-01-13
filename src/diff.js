@@ -93,7 +93,7 @@ var primitiveTypeDiff = function (a, b, p) {
   var path = p ? (Array.isArray(p) ? p : [p]) : [];
   if(a === b){ return []; }
   else{
-    return [ op('!=', path.concat(''), b) ];
+    return [ op('!=', path, b) ];
   }
 };
 
