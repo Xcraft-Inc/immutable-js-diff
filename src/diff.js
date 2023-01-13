@@ -9,7 +9,7 @@ var op = utils.op,
 
 var mapDiff = function(a, b, p){
   var ops = [];
-  var path = p || [];
+  var path = p ? (Array.isArray(p) ? p : [p]) : [];
 
   if(Immutable.is(a, b) || (a == b == null)){ return ops; }
 
@@ -59,7 +59,7 @@ var mapDiff = function(a, b, p){
 
 var sequenceDiff = function (a, b, p) {
   var ops = [];
-  var path = p || '';
+  var path = p ? (Array.isArray(p) ? p : [p]) : [];
   if(Immutable.is(a, b) || (a == b == null)){ return ops; }
   if((a.count() + 1) * (b.count() + 1) >= 10000 ) { return mapDiff(a, b, p); }
 
@@ -90,7 +90,7 @@ var sequenceDiff = function (a, b, p) {
 };
 
 var primitiveTypeDiff = function (a, b, p) {
-  var path = p || '';
+  var path = p ? (Array.isArray(p) ? p : [p]) : [];
   if(a === b){ return []; }
   else{
     return [ op('!=', path.concat(''), b) ];
