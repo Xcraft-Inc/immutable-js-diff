@@ -1,7 +1,7 @@
 {
-  "name": "immutablediff",
+  "name": "xcraft-immutablediff",
   "version": "0.4.4",
-  "description": "Create RFC 6902 style patches between Immutable.JS data structures",
+  "description": "Create patches between Immutable.JS data structures",
   "main": "src/diff.js",
   "directories": {
     "test": "tests"
@@ -18,7 +18,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "http://github.com/intelie/immutable-js-diff.git"
+    "url": "http://github.com/Xcraft-Inc/immutable-js-diff.git"
   },
   "devDependencies": {
     "gulp": "^4.0.2",
