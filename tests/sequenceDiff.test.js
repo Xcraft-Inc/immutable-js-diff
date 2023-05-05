@@ -5,7 +5,7 @@ var Immutable = require('immutable');
 var JSC = require('jscheck');
 var assert = require('assert');
 
-describe('Sequence diff', function() {
+describe('xcraft.immutablediff.sequence-diff', function() {
   var failure = null;
 
   before(function () {

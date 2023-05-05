@@ -12,7 +12,7 @@ var compareDiffs = function(a, b){
   assert.ok(Immutable.is(jsonDiffResult, immutableDiffResult));
 };
 
-describe('Comparison Tests', function() {
+describe('xcraft.immutablediff.comparison', function() {
   it('equals json-diff results', function () {
     compareDiffs({}, {});
     compareDiffs([], []);

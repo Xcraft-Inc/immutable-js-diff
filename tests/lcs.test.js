@@ -4,7 +4,7 @@ var Immutable = require('immutable');
 var lcs = require('../src/lcs');
 var assert = require('assert');
 
-describe('lcs', function() {
+describe('xcraft.immutablediff.lcs', function() {
 
   it('computes for list of chars', function () {
     var str1 = 'thisisatest';

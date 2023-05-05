@@ -5,7 +5,7 @@ var Immutable = require('immutable');
 var JSC = require('jscheck');
 var assert = require('assert');
 
-describe('Primitive types diff', function() {
+describe('xcraft.immutablediff.primitive-types-diff', function() {
   var failure = null;
 
   before(function () {
