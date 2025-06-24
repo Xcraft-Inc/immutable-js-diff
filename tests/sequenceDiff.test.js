@@ -103,6 +103,32 @@ describe('xcraft.immutablediff.sequence-diff', function() {
     assert.ok(Immutable.is(result, expected));
   });
 
+  it('returns one op diff when changing more than 5/9 items in large list', function(){
+    var list1 = Immutable.Range(0, 1000);
+    var list2 = Immutable.Range(0, 1000, 2);
+
+    var expected = Immutable.fromJS([
+      {op: '!=', path: [], value: list2.toJS()}
+    ]);
+
+    var result = Immutable.fromJS(diff(list1, list2));
+
+    assert.ok(Immutable.is(result, expected));
+  });
+
+  it('returns usual ops diff when changing less than 5/9 items in large list', function(){
+    var list1 = Immutable.Range(0, 1000);
+    var list2 = Immutable.Range(0, 500).concat(Immutable.Range(0, 500));
+
+    var expected = Immutable.List(
+      new Array(500).fill().map((_, index) => Immutable.fromJS({ op: "!=", path: [`${index+500}`], value: index }))
+    )
+
+    var result = Immutable.fromJS(diff(list1, list2));
+
+    assert.ok(Immutable.is(result, expected));
+  });
+
   it('JSCheck', function () {
     JSC.test(
       'returns add when value is inserted in the middle of sequence',

@@ -17,6 +17,20 @@ var mapDiff = function(a, b, p){
   var lastKey = null;
   var removeKey = null
 
+  /* Replace the whole list if it seems that a lot of entries have changed */
+  if (areLists){
+    const len = a.count() > b.count() ? b.count() : a.count();
+    if (len >= 9){
+      const step = Math.round(len / 9);
+      const steps = [0, step, step*2, step*3, step*4, step*5, step*6, step*7, len - 1];
+      const results = steps.map((step) => diff(a.get(step), b.get(step)).length).filter((len) => len !== 0).length;
+      if(results >= 5){
+        ops.push(op('!=', path, b));
+        return ops;
+      }
+    }
+  }
+
   if(a.forEach){
     a.forEach(function(aValue, aKey){
       if(b.has(aKey)){
