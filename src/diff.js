@@ -18,8 +18,16 @@ var mapDiff = function(a, b, p){
   var removeKey = null
 
   /* Replace the whole list if it seems that a lot of entries have changed */
-  if (areLists){
-    const len = a.count() > b.count() ? b.count() : a.count();
+  if (areLists) {
+    const aCnt = a.count();
+    const bCnt = b.count();
+    const ratio = (1 - Math.min(aCnt, bCnt) / Math.max(aCnt, bCnt)) * 100;
+    /* Replace the whole list if the length has changed of at least 50% */
+    if (ratio >= 50){
+      ops.push(op('!=', path, b));
+      return ops;
+    }
+    const len = aCnt > bCnt ? bCnt : aCnt;
     if (len >= 9){
       const step = Math.round(len / 9);
       const steps = [0, step, step*2, step*3, step*4, step*5, step*6, step*7, len - 1];
