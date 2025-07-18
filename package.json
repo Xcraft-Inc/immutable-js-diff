@@ -15,6 +15,9 @@
     "jsondiff"
   ],
   "author": "Intelie",
+  "contributors": [
+    "Mathieu Schroeter <schroeter@epsitec.ch>"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
